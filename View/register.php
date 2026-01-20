@@ -1,5 +1,4 @@
 <?php 
-
 include '../Model/db.php';
 
 if(isset($_POST['register'])) {
@@ -17,21 +16,64 @@ if(isset($_POST['register'])) {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Register | Baking Valley</title>
     <link rel="stylesheet" href="../auth_style.css">
+    <style>
+        .error-msg { color: red; font-size: 12px; margin-bottom: 10px; display: none; text-align: left; }
+    </style>
 </head>
 <body>
     <div class="auth-card">
         <h2>Join Baking Valley</h2>
-        <form method="POST">
-            <input type="text" name="username" placeholder="Full Name" required>
-            <input type="email" name="email" placeholder="Email Address" required>
-            <input type="password" name="password" placeholder="Password" required>
+        
+        <form method="POST" onsubmit="return validateRegister()">
+            <input type="text" name="username" id="username" placeholder="Full Name" required>
+            
+            <input type="email" name="email" id="email" placeholder="Email Address" required>
+            
+            <input type="password" name="password" id="password" placeholder="Password (Min. 6 chars)" required>
+            
+            <div id="js-error" class="error-msg"></div>
+
             <button type="submit" name="register">Sign Up</button>
         </form>
-        <p style="margin-top:20px; font-size:14px;">Already have an account? <a href="login.php" style="color:#5d4037; font-weight:bold; text-decoration:none;">Login</a></p>
+        
+        <p style="margin-top:20px; font-size:14px;">
+            Already have an account? <a href="login.php" style="color:#5d4037; font-weight:bold; text-decoration:none;">Login</a>
+        </p>
     </div>
+
+    <script>
+    function validateRegister() {
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const errorDiv = document.getElementById('js-error');
+
+        if (username.length < 3) {
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "Full Name must be at least 3 characters long.";
+            return false;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "Please enter a valid email address.";
+            return false;
+        }
+
+        if (password.length < 6) {
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "Password must be at least 6 characters long.";
+            return false;
+        }
+
+        return true;
+    }
+    </script>
 </body>
 </html>
