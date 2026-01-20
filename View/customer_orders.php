@@ -18,8 +18,8 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'Admin') {
         <h2>BAKING VALLEY</h2>
         <a href="admin.php">Dashboard</a>
         <a href="manage_users.php">Users</a>
-        <a href="customer_orders.php" class="active">Orders</a>
-        <a href="manage_inventory.php">Inventory</a>
+        <a href="customer_orders.php" class="active">Customer Orders</a>
+        <a href="manage_inventory.php">Manage Inventory</a>
         <a href="../Controller/logout.php" style="color:#ff7043">Logout</a>
     </div>
 

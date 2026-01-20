@@ -10,10 +10,10 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'Admin') { header("Location
 <body>
     <div class="sidebar">
         <h2>BAKING VALLEY</h2>
-        <a href="admin.php">Dashboard</a>
-        <a href="manage_users.php" class="active">Users</a>
-        <a href="customer_orders.php">Orders</a>
-        <a href="manage_inventory.php">Inventory</a>
+        <a href="admin.php">Dashboard </a>
+        <a href="manage_users.php" class="active">Manage Users</a>
+        <a href="customer_orders.php">Customer Orders</a>
+        <a href="manage_inventory.php">Manage Inventory</a>
         <a href="../Controller/logout.php" style="color:#ff7043">Logout</a>
     </div>
     <div class="main">

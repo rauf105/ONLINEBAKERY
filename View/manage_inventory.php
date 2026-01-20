@@ -61,9 +61,9 @@ if(isset($_POST['add_product'])) {
 
     <div class="sidebar">
         <h3>BAKING VALLEY</h3>
-        <p style="font-size: 12px; color: #bc8f8f;">Administrator Panel</p>
+        <p style="font-size: 12px; color: #bc8f8f;">Admin Panel</p>
         <hr style="opacity: 0.1;">
-        <a href="admin.php">Dashboard Home</a>
+        <a href="admin.php">Dashboard</a>
         <a href="customer_orders.php">Customer Orders</a>
         <a href="manage_inventory.php" class="active">Manage Inventory</a>
         <a href="manage_users.php">Manage Users</a> <a href="../Controller/logout.php" style="color: #ffab91; margin-top: 20px; display: block;">Logout</a>
@@ -79,7 +79,7 @@ if(isset($_POST['add_product'])) {
                         <option value="Cake">Cake</option>
                         <option value="Cream">Cream</option>
                         <option value="Tools">Tools</option>
-                        <option value="Biscuits">Biscuits</option>
+                        
                     </select>
                 </div>
                 <div style="display: flex; gap: 15px;">
