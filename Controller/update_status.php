@@ -1,10 +1,10 @@
 <?php
-include 'db.php';
+include '../Model/db.php';
 session_start();
 
 
 if(!isset($_SESSION['email'])) {
-    header("Location: login.php");
+    header("Location: ../View/login.php");
     exit();
 }
 
@@ -17,11 +17,11 @@ if(isset($_POST['order_id']) && isset($_POST['status'])) {
     
     if(mysqli_query($conn, $sql)) {
         
-        header("Location: customer_orders.php?msg=updated");
+        header("Location: ../View/customer_orders.php?msg=updated");
     } else {
         echo "Error updating record: " . mysqli_error($conn);
     }
 } else {
-    header("Location: customer_orders.php");
+    header("Location: ../View/customer_orders.php");
 }
 ?>

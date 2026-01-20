@@ -1,10 +1,10 @@
 <?php
-include 'db.php';
+include '../Model/db.php';
 session_start();
 
 
 if(!isset($_SESSION['role']) || $_SESSION['role'] != 'Admin') {
-    header("Location: login.php");
+    header("Location: ../View/login.php");
     exit();
 }
 
@@ -16,11 +16,11 @@ if(isset($_GET['id'])) {
     
     if(mysqli_query($conn, $sql)) {
         
-        header("Location: manage_users.php?msg=User Removed Successfully");
+        header("Location: View/manage_users.php?msg=User Removed Successfully");
     } else {
         echo "Error: " . mysqli_error($conn);
     }
 } else {
-    header("Location: manage_users.php");
+    header("Location: ../View/manage_users.php");
 }
 ?>

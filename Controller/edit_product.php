@@ -1,8 +1,8 @@
 <?php 
-include 'db.php'; 
+include '../Model/db.php';
 session_start();
 
-if(!isset($_SESSION['role']) || $_SESSION['role'] != 'Admin') { header("Location: login.php"); exit(); }
+if(!isset($_SESSION['role']) || $_SESSION['role'] != 'Admin') { header("Location: ../View/login.php"); exit(); }
 
 $id = mysqli_real_escape_string($conn, $_GET['id']);
 $res = mysqli_query($conn, "SELECT * FROM products WHERE id='$id'");
@@ -22,7 +22,7 @@ if(isset($_POST['update_product'])) {
 
     $sql = "UPDATE products SET name='$name', price='$price', stock='$stock', image='$img_name' WHERE id='$id'";
     if(mysqli_query($conn, $sql)) {
-        echo "<script>alert('Product Updated!'); window.location.href='manage_inventory.php';</script>";
+        echo "<script>alert('Product Updated!'); window.location.href='../View/manage_inventory.php';</script>";
     }
 }
 ?>
@@ -30,7 +30,7 @@ if(isset($_POST['update_product'])) {
 <html>
 <head>
     <title>Edit Product | Admin</title>
-    <link rel="stylesheet" href="admin_style.css">
+    <link rel="stylesheet" href="../admin_style.css">
     <style>
         .edit-container { max-width: 500px; margin: 50px auto; }
         .current-img { width: 100px; border-radius: 10px; margin: 10px 0; border: 1px solid #ddd; }
@@ -59,7 +59,7 @@ if(isset($_POST['update_product'])) {
                 <button type="submit" name="update_product" class="btn" style="width:100%;">Save Changes</button>
             </form>
             <br>
-            <a href="manage_inventory.php" style="display:block; text-align:center; color:#8d6e63; text-decoration:none;">← Back to Inventory</a>
+            <a href="../View/manage_inventory.php" style="display:block; text-align:center; color:#8d6e63; text-decoration:none;">← Back to Inventory</a>
         </div>
     </div>
 </body>

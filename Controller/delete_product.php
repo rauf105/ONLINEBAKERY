@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+include '../Model/db.php';
 session_start();
 
 
@@ -14,7 +14,7 @@ if(isset($_GET['id'])) {
     $sql = "DELETE FROM products WHERE id = '$id'";
     
     if(mysqli_query($conn, $sql)) {
-        header("Location: manage_inventory.php");
+        header("Location: ../View/manage_inventory.php");
         exit();
     } else {
         echo "Error deleting product: " . mysqli_error($conn);

@@ -1,6 +1,17 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "baking_valley");
+$servername = "localhost";
+$username = "root"; 
+$password = "";       
+$dbname = "baking_valley";
+
+
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+
+
 if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+  die("Connection failed: " . mysqli_connect_error());
 }
+
+
+// echo "Connected successfully"; 
 ?>

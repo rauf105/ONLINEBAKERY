@@ -1,8 +1,8 @@
 <?php
-include 'db.php';
+include '../Model/db.php';
 session_start();
 
-if(!isset($_SESSION['email'])) { header("Location: login.php"); exit(); }
+if(!isset($_SESSION['email'])) { header("Location: ../View/login.php"); exit(); }
 
 $u_email = $_SESSION['email'];
 $u_res = mysqli_query($conn, "SELECT id, username FROM users WHERE email='$u_email'");
@@ -36,9 +36,9 @@ if($grand_total > 0) {
         
         mysqli_query($conn, "DELETE FROM cart WHERE user_id = '$u_id'");
 
-        header("Location: my_orders.php?order=success");
+        header("Location: ../View/my_orders.php?order=success");
     }
 } else {
-    header("Location: index.php");
+    header("Location: ../index.php");
 }
 ?>

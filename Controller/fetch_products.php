@@ -1,10 +1,9 @@
-<?php
-include 'db.php';
+<?php 
 
+include '../Model/db.php';
 
 $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, $_GET['search']) : '';
 $cat = isset($_GET['cat']) ? mysqli_real_escape_string($conn, $_GET['cat']) : '';
-
 
 $sql = "SELECT * FROM products WHERE 1=1";
 
