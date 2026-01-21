@@ -309,3 +309,90 @@ table td {
     padding: 15px;
     border-bottom: 1px solid #eee;
 }
+
+
+
+* { box-sizing: border-box; } 
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qty-btn {
+    background: #f0f0f0;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.remove-btn {
+    color: #ff5252;
+    cursor: pointer;
+    font-size: 14px;
+    background: none;
+    border: none;
+}
+
+
+.hero-btn {
+    background: white;
+    color: var(--primary);
+    padding: 10px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 15px;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.hero-btn:hover {
+    background: var(--accent);
+    color: white;
+}
+
+.product-display-container {
+    padding: 0 5%;
+    margin-bottom: 50px;
+}
+
+.sidebar-total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+}
+
+.sidebar-total-row b {
+    font-weight: 600;
+}
+
+#sideBarTotal {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.footer-main {
+    background: var(--primary);
+    color: #dcd0c0;
+    text-align: center;
+    padding: 40px 0;
+    margin-top: 50px;
+}
+
+
+.checkout-btn.guest {
+    background: var(--accent);
+}
