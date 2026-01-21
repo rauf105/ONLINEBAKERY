@@ -16,7 +16,9 @@ if(isset($_POST['update_admin'])) {
     $new_pass = mysqli_real_escape_string($conn, $_POST['password']);
     $confirm_pass = mysqli_real_escape_string($conn, $_POST['confirm_password']);
     
-    if($new_pass !== $confirm_pass) {
+    if(empty($new_email) || empty($new_pass)) {
+        echo "<script>alert('Error: All fields are required!');</script>";
+    } elseif($new_pass !== $confirm_pass) {
         echo "<script>alert('Error: Passwords do not match!');</script>";
     } else {
         $sql = "UPDATE users SET email='$new_email', password='$new_pass' WHERE id='{$user['id']}'";
@@ -53,15 +55,15 @@ if(isset($_POST['update_admin'])) {
         <div class="edit-box">
             <h2 style="color:#5d4037; text-align: center;">Edit Admin Profile</h2>
             
-            <form method="POST" onsubmit="return validateAdminForm()">
+            <form method="POST" onsubmit="return validateAdminForm()" novalidate>
                 <label>Admin Email</label>
-                <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" required>
+                <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>">
                 
                 <label>New Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter new password" required>
+                <input type="password" id="password" name="password" placeholder="Enter new password">
                 
                 <label>Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat new password" required>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat new password">
                 
                 <button type="submit" name="update_admin" class="save-btn">Save Changes</button>
             </form>
@@ -74,8 +76,19 @@ if(isset($_POST['update_admin'])) {
 
     <script>
     function validateAdminForm() {
+        const email = document.getElementById('email').value.trim();
         const pass = document.getElementById('password').value;
         const confirmPass = document.getElementById('confirm_password').value;
+
+        if (email === "") {
+            alert("Error: Admin email is required.");
+            return false;
+        }
+
+        if (pass === "") {
+            alert("Error: Password is required.");
+            return false;
+        }
 
         if (pass.length < 6) {
             alert("Password must be at least 6 characters long.");

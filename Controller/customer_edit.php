@@ -2,7 +2,6 @@
 include '../Model/db.php';
 session_start();
 
-
 if(!isset($_SESSION['email'])) { 
     header("Location: ../View/login.php"); 
     exit(); 
@@ -12,14 +11,14 @@ $email = $_SESSION['email'];
 $res = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
 $user = mysqli_fetch_assoc($res);
 
-
 if(isset($_POST['update'])) {
     $new_email = mysqli_real_escape_string($conn, $_POST['email']);
     $new_pass = mysqli_real_escape_string($conn, $_POST['password']);
     $confirm_pass = mysqli_real_escape_string($conn, $_POST['confirm_password']);
     
-    
-    if($new_pass !== $confirm_pass) {
+    if(empty($new_email) || empty($new_pass)) {
+        echo "<script>alert('Error: All fields are required!');</script>";
+    } elseif($new_pass !== $confirm_pass) {
         echo "<script>alert('Error: Passwords do not match!');</script>";
     } else {
         $sql = "UPDATE users SET email='$new_email', password='$new_pass' WHERE id='{$user['id']}'";
@@ -59,20 +58,20 @@ if(isset($_POST['update'])) {
 
     <div class="edit-form">
         <h2>Update Profile</h2>
-        <form method="POST" onsubmit="return validateForm()">
+        <form method="POST" onsubmit="return validateForm()" novalidate>
             <div class="input-group">
                 <label>Email Address</label>
-                <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" required>
+                <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>">
             </div>
             
             <div class="input-group">
                 <label>New Password</label>
-                <input type="password" id="password" name="password" placeholder="Min 6 characters" required>
+                <input type="password" id="password" name="password" placeholder="Min 6 characters">
             </div>
             
             <div class="input-group">
                 <label>Confirm New Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat new password" required>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat new password">
             </div>
             
             <button type="submit" name="update" class="update-btn">Save Changes</button>
@@ -82,18 +81,27 @@ if(isset($_POST['update'])) {
 
     <script>
     function validateForm() {
+        const email = document.getElementById('email').value.trim();
         const pass = document.getElementById('password').value;
         const confirmPass = document.getElementById('confirm_password').value;
 
-        
+        if (email === "") {
+            alert("Error: Email is required.");
+            return false;
+        }
+
+        if (pass === "") {
+            alert("Error: Password is required.");
+            return false;
+        }
+
         if (pass.length < 6) {
             alert("Security Alert: Password must be at least 6 characters long!");
             return false;
         }
 
-        
         if (pass !== confirmPass) {
-            alert("Validation Error: Passwords do not match. Please re-type.");
+            alert("Validation Error: Passwords do not match!");
             return false;
         }
 

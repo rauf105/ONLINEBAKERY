@@ -39,9 +39,9 @@ if (isset($_POST['login'])) {
         
         <p id="js-error" style="color:red; font-size:14px; display:none;"></p>
 
-        <form method="POST" onsubmit="return validateLogin()">
-            <input type="email" name="email" id="login-email" placeholder="Email Address" required>
-            <input type="password" name="password" id="login-pass" placeholder="Password" required>
+        <form method="POST" onsubmit="return validateLogin()" novalidate>
+            <input type="email" name="email" id="login-email" placeholder="Email Address">
+            <input type="password" name="password" id="login-pass" placeholder="Password">
             <button type="submit" name="login">Login</button>
         </form>
         
@@ -58,6 +58,13 @@ if (isset($_POST['login'])) {
         const phpError = document.getElementById('php-error');
 
         if(phpError) phpError.style.display = 'none';
+        errorDisplay.style.display = 'none';
+
+        if (email === "") {
+            errorDisplay.innerText = "Email Address is required!";
+            errorDisplay.style.display = 'block';
+            return false;
+        }
 
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)) {
@@ -66,8 +73,8 @@ if (isset($_POST['login'])) {
             return false;
         }
 
-        if (pass.length < 1) {
-            errorDisplay.innerText = "Password cannot be empty!";
+        if (pass === "") {
+            errorDisplay.innerText = "Password is required!";
             errorDisplay.style.display = 'block';
             return false;
         }

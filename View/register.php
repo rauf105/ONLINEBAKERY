@@ -29,12 +29,12 @@ if(isset($_POST['register'])) {
     <div class="auth-card">
         <h2>Join Baking Valley</h2>
         
-        <form method="POST" onsubmit="return validateRegister()">
-            <input type="text" name="username" id="username" placeholder="Full Name" required>
+        <form method="POST" onsubmit="return validateRegister()" novalidate>
+            <input type="text" name="username" id="username" placeholder="Full Name">
             
-            <input type="email" name="email" id="email" placeholder="Email Address" required>
+            <input type="email" name="email" id="email" placeholder="Email Address">
             
-            <input type="password" name="password" id="password" placeholder="Password (Min. 6 chars)" required>
+            <input type="password" name="password" id="password" placeholder="Password (Min. 6 chars)">
             
             <div id="js-error" class="error-msg"></div>
 
@@ -53,9 +53,23 @@ if(isset($_POST['register'])) {
         const password = document.getElementById('password').value;
         const errorDiv = document.getElementById('js-error');
 
+        errorDiv.style.display = 'none';
+
+        if (username === "") {
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "Full Name is required.";
+            return false;
+        }
+
         if (username.length < 3) {
             errorDiv.style.display = 'block';
             errorDiv.innerText = "Full Name must be at least 3 characters long.";
+            return false;
+        }
+
+        if (email === "") {
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "Email Address is required.";
             return false;
         }
 
@@ -63,6 +77,12 @@ if(isset($_POST['register'])) {
         if (!emailPattern.test(email)) {
             errorDiv.style.display = 'block';
             errorDiv.innerText = "Please enter a valid email address.";
+            return false;
+        }
+
+        if (password === "") {
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = "Password is required.";
             return false;
         }
 
