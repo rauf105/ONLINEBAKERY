@@ -60,10 +60,10 @@ if(isset($_POST['update_admin'])) {
                 <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>">
                 
                 <label>New Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter new password">
+                <input type="text" id="password" name="password" placeholder="Enter new password">
                 
                 <label>Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat new password">
+                <input type="text" id="confirm_password" name="confirm_password" placeholder="Repeat new password">
                 
                 <button type="submit" name="update_admin" class="save-btn">Save Changes</button>
             </form>

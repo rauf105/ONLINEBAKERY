@@ -66,12 +66,12 @@ if(isset($_POST['update'])) {
             
             <div class="input-group">
                 <label>New Password</label>
-                <input type="password" id="password" name="password" placeholder="Min 6 characters">
+                <input type="text" id="password" name="password" placeholder="Min 6 characters">
             </div>
             
             <div class="input-group">
                 <label>Confirm New Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat new password">
+                <input type="text" id="confirm_password" name="confirm_password" placeholder="Repeat new password">
             </div>
             
             <button type="submit" name="update" class="update-btn">Save Changes</button>
