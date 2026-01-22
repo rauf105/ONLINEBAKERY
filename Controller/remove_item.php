@@ -2,13 +2,17 @@
 include '../Model/db.php';
 session_start();
 
-if(isset($_GET['id']) && isset($_SESSION['email'])) {
+if(isset($_GET['id'], $_GET['action'], $_SESSION['email'])) {
     $p_id = $_GET['id'];
-    $u_email = $_SESSION['email'];
+    $action = $_GET['action'];
+    $email = $_SESSION['email'];
+    $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id FROM users WHERE email='$email'"));
+    $u_id = $user['id'];
 
-    $u_data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id FROM users WHERE email='$u_email'"));
-    $u_id = $u_data['id'];
-
-    mysqli_query($conn, "DELETE FROM cart WHERE user_id = '$u_id' AND product_id = '$p_id'");
+    if($action == 'plus') {
+        mysqli_query($conn, "UPDATE cart SET quantity = quantity + 1 WHERE user_id = '$u_id' AND product_id = '$p_id'");
+    } else {
+        mysqli_query($conn, "UPDATE cart SET quantity = quantity - 1 WHERE user_id = '$u_id' AND product_id = '$p_id' AND quantity > 1");
+    }
 }
 ?>

@@ -48,21 +48,12 @@
         <h3>Shopping Bag</h3>
         <button onclick="toggleCart()" class="close-btn">&times;</button>
     </div>
-    
     <div id="cartItems" class="cart-body"></div>
-    
     <div class="cart-footer">
         <div class="sidebar-total-row">
             <b>Total:</b> <span id="sideBarTotal">৳ 0.00</span>
         </div>
-        
-        <?php 
-            $isLoggedIn = isset($_SESSION['email']);
-            $btnClass = $isLoggedIn ? "checkout-btn" : "checkout-btn guest";
-            $btnText = $isLoggedIn ? "Confirm Order" : "Login to Order";
-            $btnLink = $isLoggedIn ? "View/order_summary.php" : "View/login.php";
-        ?>
-        <a href="<?= $btnLink ?>" class="<?= $btnClass ?>"><?= $btnText ?></a>
+        <a href="View/order_summary.php" class="checkout-btn">Confirm Order</a>
     </div>
 </div>
 
@@ -71,10 +62,30 @@
 </footer>
 
 <script>
-    const call = url => fetch(url).then(r => r.text());
+    const fetchJSON = url => fetch(url).then(r => r.json());
 
     async function loadProducts(s = '', c = '') {
-        document.getElementById('productDisplay').innerHTML = await call(`Controller/fetch_products.php?search=${s}&cat=${c}`);
+        const products = await fetchJSON(`Controller/fetch_products.php?search=${s}&cat=${c}`);
+        const container = document.getElementById('productDisplay');
+        
+        if(!products.length) {
+            container.innerHTML = "<p style='grid-column:1/-1; text-align:center;'>No products found!</p>";
+            return;
+        }
+
+        container.innerHTML = products.map(p => `
+            <div class="product-card">
+                <img src="uploads/${p.image || 'default.png'}" alt="${p.name}">
+                <div class="product-info">
+                    <h3>${p.name}</h3>
+                    <p>${p.category}</p>
+                    <span class="price">৳ ${parseFloat(p.price).toFixed(2)}</span>
+                    <button class="add-btn" onclick="addToCart(${p.id})">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+        `).join('');
     }
 
     function filterCat(c, btn) {
@@ -89,17 +100,37 @@
     }
 
     async function updateCart() {
-        document.getElementById('cartItems').innerHTML = await call('Controller/get_cart.php');
-        const total = document.getElementById('hidden_total_val')?.value || 0;
-        document.getElementById('sideBarTotal').innerText = '৳ ' + parseFloat(total).toLocaleString();
+        const data = await fetchJSON('Controller/get_cart.php');
+        const container = document.getElementById('cartItems');
+        
+        if(!data.logged_in) {
+            container.innerHTML = "<p style='padding:20px;'>Please login.</p>";
+            return;
+        }
+
+        container.innerHTML = data.items.length ? data.items.map(item => `
+            <div class="cart-item" style="display:flex; align-items:center; border-bottom:1px solid #eee; padding:10px;">
+                <img src="uploads/${item.image}" width="40" height="40" style="margin-right:10px;">
+                <div style="flex:1;">
+                    <h4 style="margin:0; font-size:13px;">${item.name}</h4>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <button onclick="updateQty(${item.id}, 'minus')">-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="updateQty(${item.id}, 'plus')">+</button>
+                        <button onclick="removeItem(${item.id})" style="margin-left:auto; color:red; border:none; background:none;">×</button>
+                    </div>
+                </div>
+            </div>
+        `).join('') : "<p style='padding:20px;'>Empty!</p>";
+
+        document.getElementById('sideBarTotal').innerText = '৳ ' + data.total.toLocaleString();
     }
 
-    const addToCart = id => call(`Controller/add_to_cart_action.php?id=${id}`).then(() => { toggleCart(); });
-    const updateQty = (id, a) => call(`Controller/update_qty.php?id=${id}&action=${a}`).then(updateCart);
-    const removeItem = id => confirm('Remove?') && call(`Controller/remove_item.php?id=${id}`).then(updateCart);
+    const addToCart = id => fetch(`Controller/add_to_cart_action.php?id=${id}`).then(updateCart).then(() => { if(!document.getElementById('cartSidebar').classList.contains('open')) toggleCart(); });
+    const updateQty = (id, a) => fetch(`Controller/update_qty.php?id=${id}&action=${a}`).then(updateCart);
+    const removeItem = id => confirm('Remove?') && fetch(`Controller/remove_item.php?id=${id}`).then(updateCart);
 
     window.onload = () => { loadProducts(); updateCart(); };
 </script>
-
 </body>
 </html>
