@@ -1,4 +1,18 @@
-<?php include 'Model/db.php'; session_start(); ?>
+<?php 
+include 'Model/db.php'; 
+session_start(); 
+
+if (!isset($_SESSION['email']) && isset($_COOKIE['user_email'])) {
+    $c_email = $_COOKIE['user_email'];
+    $c_res = mysqli_query($conn, "SELECT * FROM users WHERE email='$c_email'");
+    if ($row = mysqli_fetch_assoc($c_res)) {
+        $_SESSION['user_id'] = $row['id'];
+        $_SESSION['username'] = $row['username'];
+        $_SESSION['email'] = $row['email'];
+        $_SESSION['role'] = $row['role'];
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,7 +140,10 @@
         document.getElementById('sideBarTotal').innerText = '৳ ' + data.total.toLocaleString();
     }
 
-    const addToCart = id => fetch(`Controller/add_to_cart_action.php?id=${id}`).then(updateCart).then(() => { if(!document.getElementById('cartSidebar').classList.contains('open')) toggleCart(); });
+    const addToCart = id => fetch(`Controller/add_to_cart_action.php?id=${id}`).then(updateCart).then(() => { 
+        if(!document.getElementById('cartSidebar').classList.contains('open')) toggleCart(); 
+    });
+    
     const updateQty = (id, a) => fetch(`Controller/update_qty.php?id=${id}&action=${a}`).then(updateCart);
     const removeItem = id => confirm('Remove?') && fetch(`Controller/remove_item.php?id=${id}`).then(updateCart);
 

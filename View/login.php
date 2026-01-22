@@ -14,6 +14,10 @@ if (isset($_POST['login'])) {
         $_SESSION['username'] = $user['username'];
         $_SESSION['email'] = $user['email']; 
         $_SESSION['role'] = $user['role'];
+
+        if (isset($_POST['remember'])) {
+            setcookie('user_email', $email, time() + (86400 * 30), "/");
+        }
         
         header("Location: " . ($user['role'] == 'Admin' ? "admin.php" : "../index.php"));
         exit();
@@ -42,6 +46,12 @@ if (isset($_POST['login'])) {
         <form method="POST" onsubmit="return validateLogin()" novalidate>
             <input type="email" name="email" id="login-email" placeholder="Email Address">
             <input type="password" name="password" id="login-pass" placeholder="Password">
+            
+            <div style="text-align: left; margin: 10px 0; font-size: 14px;">
+                <input type="checkbox" name="remember" id="remember">
+                <label for="remember">Remember Me</label>
+            </div>
+
             <button type="submit" name="login">Login</button>
         </form>
         
@@ -60,25 +70,11 @@ if (isset($_POST['login'])) {
         if(phpError) phpError.style.display = 'none';
         errorDisplay.style.display = 'none';
 
-        if (email === "") {
-            errorDisplay.innerText = "Email Address is required!";
+        if (email === "" || pass === "") {
+            errorDisplay.innerText = "All fields are required!";
             errorDisplay.style.display = 'block';
             return false;
         }
-
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            errorDisplay.innerText = "Please enter a valid email address!";
-            errorDisplay.style.display = 'block';
-            return false;
-        }
-
-        if (pass === "") {
-            errorDisplay.innerText = "Password is required!";
-            errorDisplay.style.display = 'block';
-            return false;
-        }
-
         return true;
     }
     </script>
